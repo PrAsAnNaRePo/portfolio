@@ -34,13 +34,13 @@ const projects = [
   {
     title: 'adeos',
     href: 'https://github.com/PrAsAnNaRePo',
-    type: 'client work · document intelligence',
+    type: 'coffee inc · client delivery',
     year: '2024—26',
-    summary: 'an engineering document intelligence platform for manufacturing teams.',
+    summary: 'an engineering document intelligence platform i worked on at coffee inc for a manufacturing client.',
     details: [
-      'fastapi services for ballooning and bom extraction',
-      'gpu inference pipelines for ocr and vision-language models',
-      'dockerized services for repeatable production deployments',
+      'contributed to fastapi services for ballooning and bom extraction',
+      'built gpu inference pipelines for ocr and vision-language models',
+      'helped dockerize services for repeatable production deployments',
     ],
     stack: 'python · fastapi · ocr · gpu inference',
   },
@@ -120,14 +120,8 @@ function App() {
   const [activeProject, setActiveProject] = useState(null)
   const [activeWriting, setActiveWriting] = useState(null)
   const [formStatus, setFormStatus] = useState('idle')
-  const [selectedNav, setSelectedNav] = useState('home')
-  const [genieTarget, setGenieTarget] = useState(null)
 
   const goTo = (id) => {
-    setSelectedNav(id)
-    setGenieTarget(null)
-    window.requestAnimationFrame(() => setGenieTarget(id))
-    window.setTimeout(() => setGenieTarget(null), 850)
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
     track('navigation_clicked', { destination: id })
   }
@@ -178,7 +172,7 @@ function App() {
         <nav className="main-nav" aria-label="main navigation">
           <p className="nav-label">pages</p>
           {navItems.map((item) => (
-            <button className={`nav-item ${selectedNav === item.id ? 'is-selected' : ''}`} key={item.id} onClick={() => goTo(item.id)}>
+            <button className="nav-item" key={item.id} onClick={() => goTo(item.id)}>
               <span className="nav-icon" aria-hidden="true">{item.icon}</span>
               <span>{item.label}</span>
             </button>
@@ -195,7 +189,7 @@ function App() {
       </aside>
 
       <main className="main-content">
-        <section className={`hero section-anchor ${genieTarget === 'home' ? 'genie-landing' : ''}`} id="home">
+        <section className="hero section-anchor" id="home">
           <div className="hero-copy">
             <div className="eyebrow-row"><span className="dot" /> <span>hello,</span> <strong className="hero-name">i'm prasanna</strong></div>
             <h1>i build and deploy<br /><em>models for products.</em></h1>
@@ -214,13 +208,13 @@ function App() {
           </div>
         </section>
 
-        <section className={`content-section section-anchor ${genieTarget === 'about' ? 'genie-landing' : ''}`} id="about">
+        <section className="content-section section-anchor" id="about">
           <div className="section-heading">
             <div><span className="section-index">01 /</span><h2>a little about me</h2></div>
             <span className="section-aside">the short version</span>
           </div>
           <div className="about-layout">
-            <p className="about-lead">i like building things end to end — from figuring out what should exist to getting the low-level implementation working in production.</p>
+            <p className="about-lead">i like building things end to end, from figuring out what should exist to getting the low-level implementation working in production.</p>
             <div className="about-body">
               <p>my work sits at the intersection of ai/ml and backend engineering. i train models, design inference systems, and package the useful parts into tools people can actually use.</p>
               <p>i enjoy the space between a research paper and a working product: the experiments, the constraints, and the small decisions that make a system feel dependable.</p>
@@ -229,7 +223,7 @@ function App() {
           </div>
         </section>
 
-        <section className={`content-section section-anchor ${genieTarget === 'work' ? 'genie-landing' : ''}`} id="work">
+        <section className="content-section section-anchor" id="work">
           <div className="section-heading">
             <div><span className="section-index">02 /</span><h2>things i've built</h2></div>
             <span className="section-aside">selected work · 2023—26</span>
@@ -262,7 +256,7 @@ function App() {
           <div className="project-footer"><span>more experiments are hiding in the repo</span><a href="https://github.com/PrAsAnNaRePo" target="_blank" rel="noreferrer">visit github <ArrowUpRight /></a></div>
         </section>
 
-        <section className={`content-section notes-section section-anchor ${genieTarget === 'notes' ? 'genie-landing' : ''}`} id="notes">
+        <section className="content-section notes-section section-anchor" id="notes">
           <div className="section-heading">
             <div><span className="section-index">03 /</span><h2>writtings</h2></div>
             <span className="section-aside">three articles</span>
@@ -306,7 +300,7 @@ function App() {
           <div className="service-list"><span>ai product prototypes</span><span>model training & evaluation</span><span>inference infrastructure</span><span>backend systems</span></div>
         </section>
 
-        <section className={`contact-section section-anchor ${genieTarget === 'contact' ? 'genie-landing' : ''}`} id="contact">
+        <section className="contact-section section-anchor" id="contact">
           <div className="contact-copy"><span className="section-index">05 /</span><h2>let's make<br /><em>something useful.</em></h2><p>have a problem, an idea, or just a good question? my inbox is open.</p></div>
           <div className="contact-form-wrap">
             <form className="contact-form" name="contact" method="post" data-netlify="true" netlify-honeypot="bot-field" onSubmit={handleContactSubmit}>

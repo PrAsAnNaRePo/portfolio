@@ -30,11 +30,11 @@ a { color: inherit; text-decoration: none; }
 .eyebrow { margin: 0 0 4px; color: var(--muted); }
 .main-nav { margin-top: 0; }
 .nav-label { margin: 0 0 13px; color: var(--muted); }
-.nav-item { position: relative; display: grid; grid-template-columns: 18px 1fr; align-items: center; width: 100%; padding: 9px 0; color: var(--muted); text-align: left; background: transparent; transition: color .2s, transform .2s; }
-.nav-item::after { position: absolute; top: 50%; right: -25px; width: 3px; height: 22px; border-radius: 999px; background: var(--accent); content: ''; opacity: 0; transform: translateY(-50%) scaleY(.08); transform-origin: center; }
-.nav-item.is-selected { color: var(--ink); }
-.nav-item.is-selected::after { animation: genie-marker .65s cubic-bezier(.22, .9, .26, 1.12) both; }
-.nav-item:hover { color: var(--ink); transform: translateX(3px); }
+.nav-item { display: grid; grid-template-columns: 18px 1fr; align-items: center; width: 100%; padding: 9px 0; color: var(--muted); text-align: left; background: transparent; transform-origin: left center; transition: color .22s, opacity .22s, transform .22s cubic-bezier(.2, .8, .25, 1.2); will-change: transform; }
+.main-nav:has(.nav-item:hover) .nav-item { opacity: .72; transform: scale(.98); }
+.main-nav:has(.nav-item:hover) .nav-item:hover { color: var(--ink); opacity: 1; transform: translateX(4px) scale(1.16); }
+.main-nav .nav-item:has(+ .nav-item:hover), .main-nav .nav-item:hover + .nav-item { opacity: .92; transform: translateX(3px) scale(1.07); }
+.main-nav .nav-item:has(+ .nav-item + .nav-item:hover), .main-nav .nav-item:hover + .nav-item + .nav-item { opacity: .82; transform: translateX(2px) scale(1.03); }
 .nav-icon { font-size: 15px; line-height: 1; }
 .nav-item span:last-child { font-size: 12px; }
 .sidebar-bottom { margin-top: auto; }
@@ -164,29 +164,13 @@ em { font-family: 'Playfair Display', serif; font-weight: 500; letter-spacing: -
 .resume-link { font-family: 'DM Mono', monospace; font-size: 10px; }
 .footer { justify-content: space-between; gap: 20px; padding: 20px 0 28px; border-top: 1px solid var(--line); color: var(--muted); }
 
-@keyframes genie-marker {
-  0% { opacity: 0; transform: translateY(-50%) scaleY(.08); }
-  34% { opacity: 1; transform: translateY(-50%) scaleY(1.8); }
-  64% { transform: translateY(-50%) scaleY(.68); }
-  100% { opacity: 1; transform: translateY(-50%) scaleY(1); }
-}
-
-@keyframes genie-landing {
-  0% { opacity: .08; filter: blur(9px); transform: perspective(900px) translateX(-65px) scaleX(.025) scaleY(.48) skewX(-8deg); transform-origin: left center; clip-path: polygon(0 48%, 100% 16%, 100% 84%, 0 52%); }
-  30% { opacity: .62; filter: blur(2px); transform: perspective(900px) translateX(-18px) scaleX(.38) scaleY(.78) skewX(-4deg); clip-path: polygon(0 19%, 100% 0, 100% 100%, 0 81%); }
-  63% { opacity: .95; filter: blur(.35px); transform: perspective(900px) translateX(-3px) scaleX(1.04) scaleY(1.02) skewX(1deg); clip-path: polygon(0 2%, 100% 0, 100% 100%, 0 98%); }
-  100% { opacity: 1; filter: blur(0); transform: none; clip-path: inset(0); }
-}
-
-.genie-landing { animation: genie-landing .82s cubic-bezier(.18, .88, .24, 1.08) both; }
-
 @media (max-width: 900px) {
   .app-shell { grid-template-columns: 1fr; }
   .sidebar { position: relative; height: auto; padding: 18px 20px 16px; border-right: 0; border-bottom: 1px solid var(--line); }
   .main-nav { display: flex; gap: 17px; margin: 0; }
   .nav-label, .sidebar-bottom { display: none; }
   .nav-item { display: flex; width: auto; gap: 6px; padding: 4px 0; }
-  .nav-item::after { display: none; }
+  .main-nav:has(.nav-item:hover) .nav-item, .main-nav:has(.nav-item:hover) .nav-item:hover, .main-nav .nav-item:has(+ .nav-item:hover), .main-nav .nav-item:hover + .nav-item, .main-nav .nav-item:has(+ .nav-item + .nav-item:hover), .main-nav .nav-item:hover + .nav-item + .nav-item { opacity: 1; transform: none; }
   .nav-icon { display: none; }
   .nav-item span:last-child { font-family: 'DM Mono', monospace; font-size: 10px; }
   .main-content { padding: 0 5vw; }
