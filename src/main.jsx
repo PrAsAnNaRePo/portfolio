@@ -161,8 +161,8 @@ function App() {
   }
 
   const closeWriting = () => {
-    window.location.hash = ''
-    document.getElementById('notes')?.scrollIntoView({ behavior: 'smooth' })
+    if (window.location.hash) history.replaceState(null, '', window.location.pathname)
+    setActiveWriting(null)
   }
 
   const handleContactSubmit = async (event) => {
