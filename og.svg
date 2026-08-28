@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1200" width="1200" height="1200">
+  <rect width="1200" height="1200" fill="#f4f1ea"/>
+  <g transform="translate(0 285)">
+    <circle cx="94" cy="142" r="16" fill="#9bbd55" opacity="0.18"/>
+    <circle cx="94" cy="142" r="8" fill="#9bbd55"/>
+    <text x="122" y="151" font-family="Menlo, Courier, monospace" font-size="25" letter-spacing="1" fill="#74766f">hello, i'm prasanna · ai/ml engineer</text>
+    <rect x="90" y="352" width="760" height="16" fill="#d7e6a7"/>
+    <text x="90" y="272" font-family="Helvetica, Arial, sans-serif" font-weight="700" font-size="84" letter-spacing="-3" fill="#202321">i build and deploy AI</text>
+    <text x="90" y="372" font-family="Georgia, 'Times New Roman', serif" font-style="italic" font-size="84" letter-spacing="-2" fill="#202321">models for products.</text>
+    <text x="90" y="568" font-family="Menlo, Courier, monospace" font-size="23" letter-spacing="1" fill="#74766f">projects · writings · contact</text>
+    <text x="1110" y="568" text-anchor="end" font-family="Menlo, Courier, monospace" font-size="23" letter-spacing="1" fill="#74766f">personal notebook</text>
+  </g>
+</svg>

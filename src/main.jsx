@@ -1,4 +1,4 @@
-import { StrictMode, useState } from 'react'
+import { StrictMode, useEffect, useState } from 'react'
 import { createRoot } from 'react-dom/client'
 import { writings } from './writings'
 import './styles.css'
@@ -6,7 +6,7 @@ import './styles.css'
 const projects = [
   {
     title: 'flowtic',
-    href: 'https://github.com/PrAsAnNaRePo',
+    href: 'https://github.com/PrAsAnNaRePo/Flowtic',
     type: 'open source · agents',
     year: '2025',
     summary: 'a small multi-agent workflow library for routing messages without a heavy orchestration layer.',
@@ -20,7 +20,8 @@ const projects = [
   },
   {
     title: 'nape-0',
-    href: 'https://github.com/PrAsAnNaRePo',
+    href: 'https://huggingface.co/nnpy/Nape-0',
+    linkLabel: 'view on hugging face',
     type: 'research · language models',
     year: '2024',
     summary: 'a compact language model series designed to get useful performance without a giant deployment footprint.',
@@ -33,7 +34,6 @@ const projects = [
   },
   {
     title: 'adeos',
-    href: 'https://github.com/PrAsAnNaRePo',
     type: 'coffee inc · client delivery',
     year: '2024—26',
     summary: 'an engineering document intelligence platform i worked on at coffee inc for a manufacturing client.',
@@ -46,7 +46,7 @@ const projects = [
   },
   {
     title: 'chatft',
-    href: 'https://github.com/PrAsAnNaRePo',
+    href: 'https://github.com/PrAsAnNaRePo/chat-ft',
     type: 'open source · fine-tuning',
     year: '2024',
     summary: 'a toolkit for training chatbots on whatsapp conversations, with control over how the dataset is shaped.',
@@ -63,7 +63,7 @@ const navItems = [
   { id: 'home', label: 'home', icon: '⌂' },
   { id: 'about', label: 'about', icon: '◌' },
   { id: 'work', label: 'work', icon: '▧' },
-  { id: 'notes', label: 'notes', icon: '✎' },
+  { id: 'notes', label: 'writings', icon: '✎' },
   { id: 'contact', label: 'contact', icon: '↗' },
 ]
 
@@ -116,10 +116,33 @@ function WritingBlocks({ blocks }) {
   )
 }
 
+const writingFromHash = () => {
+  const match = window.location.hash.match(/^#\/writing\/([\w-]+)$/)
+  return match ? (writings.find((writing) => writing.slug === match[1]) ?? null) : null
+}
+
 function App() {
   const [activeProject, setActiveProject] = useState(null)
-  const [activeWriting, setActiveWriting] = useState(null)
+  const [activeWriting, setActiveWriting] = useState(writingFromHash)
   const [formStatus, setFormStatus] = useState('idle')
+
+  useEffect(() => {
+    const syncFromHash = () => setActiveWriting(writingFromHash())
+    window.addEventListener('hashchange', syncFromHash)
+    return () => window.removeEventListener('hashchange', syncFromHash)
+  }, [])
+
+  useEffect(() => {
+    document.title = activeWriting ? `${activeWriting.title} — prasanna` : 'prasanna — personal notebook'
+  }, [activeWriting])
+
+  useEffect(() => {
+    if (!writingFromHash()) return
+    const frame = requestAnimationFrame(() => {
+      document.getElementById('notes')?.scrollIntoView({ behavior: 'instant' })
+    })
+    return () => cancelAnimationFrame(frame)
+  }, [])
 
   const goTo = (id) => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
@@ -132,8 +155,14 @@ function App() {
   }
 
   const openWriting = (slug) => {
-    setActiveWriting(writings.find((writing) => writing.slug === slug) ?? null)
+    window.location.hash = `/writing/${slug}`
+    document.getElementById('notes')?.scrollIntoView({ behavior: 'instant' })
     track('writing_opened', { writing: slug })
+  }
+
+  const closeWriting = () => {
+    window.location.hash = ''
+    document.getElementById('notes')?.scrollIntoView({ behavior: 'smooth' })
   }
 
   const handleContactSubmit = async (event) => {
@@ -192,19 +221,12 @@ function App() {
         <section className="hero section-anchor" id="home">
           <div className="hero-copy">
             <div className="eyebrow-row"><span className="dot" /> <span>hello,</span> <strong className="hero-name">i'm prasanna</strong></div>
-            <h1>i build and deploy<br /><em>models for products.</em></h1>
+            <h1>i build and deploy <em>AI</em><br />models for <em>products.</em></h1>
             <p className="hero-lede">ai/ml engineer and curious builder across product thinking, ai model training, and designing backend systems.</p>
             <div className="hero-actions">
               <button className="button button-dark" onClick={() => goTo('work')}>see what i've built <ArrowUpRight /></button>
               <button className="text-button" onClick={() => goTo('contact')}>say hello <ArrowUpRight /></button>
             </div>
-          </div>
-          <div className="hero-note" aria-label="a note about prasanna">
-            <div className="note-pin" />
-            <p className="note-label">a note to self</p>
-            <p className="note-quote">“you have power over your mind,<br />not outside. realize this,<br />and you will find strength.”</p>
-            <div className="scribble">✳</div>
-            <p className="note-signature">— marcus aurelius</p>
           </div>
         </section>
 
@@ -245,7 +267,9 @@ function App() {
                       <ul>{project.details.map((detail) => <li key={detail}>{detail}</li>)}</ul>
                       <div className="project-detail-actions">
                         <span className="project-stack">{project.stack}</span>
-                        <a className="project-link" href={project.href} target="_blank" rel="noreferrer" onClick={() => track('project_link_clicked', { project: project.title })}>view project <ArrowUpRight /></a>
+                        {project.href && (
+                          <a className="project-link" href={project.href} target="_blank" rel="noreferrer" onClick={() => track('project_link_clicked', { project: project.title })}>{project.linkLabel ?? 'view project'} <ArrowUpRight /></a>
+                        )}
                       </div>
                     </div>
                   )}
@@ -258,12 +282,12 @@ function App() {
 
         <section className="content-section notes-section section-anchor" id="notes">
           <div className="section-heading">
-            <div><span className="section-index">03 /</span><h2>writtings</h2></div>
+            <div><span className="section-index">03 /</span><h2>writings</h2></div>
             <span className="section-aside">three articles</span>
           </div>
           {activeWriting ? (
             <article className="reading-view" id="writing-reader">
-              <button className="back-button" type="button" onClick={() => setActiveWriting(null)}>← back to writings</button>
+              <button className="back-button" type="button" onClick={closeWriting}>← back to writings</button>
               <div className="reading-header">
                 <div>
                   <div className="blog-meta"><span>{activeWriting.date}</span><span>{activeWriting.readTime}</span></div>
